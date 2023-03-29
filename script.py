@@ -32,3 +32,16 @@ plt.figure(1)
 plt.title('All')
 plt.xlabel('Wavelength (nm)')
 plt.ylabel('Intensity (a.u.)')
+
+Xij = np.zeros((len(values), len(values[0][wavelength])))
+for i, value in enumerate(values):
+    for j, au in enumerate(value[intensity]):
+        Xij[i][j] = (value['mean'] - au)/value['std']
+
+for i, row in enumerate(Xij):
+    plt.figure(3)
+    plt.plot(values[0][wavelength], row)
+
+plt.figure(3)
+plt.xlabel('Wavelength (nm)')
+plt.ylabel('Pre processed(technique mentioned in the glucose paper)')
