@@ -16,6 +16,11 @@ for filename in names_of_files:
     plt.figure(1)
     plt.plot(wavelength, intensity, data=raw_values, label=filename)
 
+    # with np.errstate(divide='raise', invalid='raise'):
+    #     try:
+    #         log_intensity_400_to_900 = -np.log10(wavelength_400_to_900[intensity].to_numpy())
+    #     except FloatingPointError:
+    #         print(filename)
     log_intensity_400_to_900 = -np.log10(wavelength_400_to_900[intensity].to_numpy())
     values_400_to_900.append({
         wavelength: wavelength_400_to_900[wavelength].to_numpy(),
