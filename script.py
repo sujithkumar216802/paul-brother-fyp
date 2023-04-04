@@ -5,18 +5,18 @@ import matplotlib.pyplot as plt
 
 wavelength = 'Wavelength(nm)'
 intensity = 'Intensity(a.u.)'
-values_400_to_900_df = pd.DataFrame()
 
-def read_and_preprocess():
-    names_of_files = os.listdir('data')
+def read_and_preprocess(data_dir='data'):
+    values_400_to_900_df = pd.DataFrame()
+    names_of_files = os.listdir(data_dir)
     for filename in names_of_files:
-        raw_values = pd.read_csv('data\\' + filename, delim_whitespace=True, header=0)
+        raw_values = pd.read_csv(data_dir + '\\' + filename, delim_whitespace=True, header=0)
         wavelength_400_to_900_df = raw_values[raw_values[wavelength].between(400, 900)]
         values_400_to_900_df[wavelength] = wavelength_400_to_900_df[wavelength]
 
         # with np.errstate(divide='raise', invalid='raise'):
         #     try:
-        #         log_intensity_400_to_900 = -np.log10(wavelength_400_to_900[intensity].to_numpy())
+        #         log_intensity_400_to_900 = -np.log10(wavelength_400_to_900_df[intensity].to_numpy())
         #     except FloatingPointError:
         #         print(filename)
         log_intensity_400_to_900 = -np.log10(wavelength_400_to_900_df[intensity].to_numpy())
@@ -47,4 +47,7 @@ def read_and_preprocess():
     plt.ylabel('Pre processed(technique mentioned in the glucose paper)')
     plt.legend(bbox_to_anchor=(1.5, 1), loc="upper right")
 
-read_and_preprocess()
+    values_400_to_900_df = values_400_to_900_df.set_index(wavelength)
+    return values_400_to_900_df
+
+values = read_and_preprocess()
